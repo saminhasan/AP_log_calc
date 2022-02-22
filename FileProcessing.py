@@ -56,7 +56,10 @@ def split_dict(d, key):
             pd1.append(d['PD'][i])
 
     return tkf0,kf0,tkf1,kf1,pn0,pe0,pd0
-
+def resizer(ref_arr, data_arr):
+    New_Power = interp.interp1d(np.arange(len(data_arr)),data_arr)
+    pp = New_Power(np.linspace(0,len(ref_arr)-1,len(ref_arr)))
+    return pp
 if __name__ == '__main__':
 
     file_name = 'tf.log'
@@ -64,6 +67,7 @@ if __name__ == '__main__':
     data = lf.extract_data()
     Voltage = data['BAT']['Volt'][1:]
     Current = data['BAT']['Curr'][1:]
+    Time = data['BAT']['TimeUS'][1:]
     Power = np.array([Voltage[i] * Current[i] for i in range(len(Voltage))])
     #plt.plot(data['BAT']['TimeUS'][1:], Voltage, label ='Voltage (V)')
     #plt.plot(data['BAT']['TimeUS'][1:], Current, label ='Current (A)')
@@ -94,21 +98,25 @@ if __name__ == '__main__':
     ax.grid(False)
     ax.plot(u, v, w)
     
-    New_Power = interp.interp1d(np.arange(len(Power)),Power)
-    pp = New_Power(np.linspace(0,len(u)-1,len(u)))
-    #m = 0
-    #for i in range(len(Power)):
-    #   New_Power.append(Power[i])
-    
-    size = [10 * power / max(pp)  for power in pp]
-    print(len(size),len(u))
+
+    New_Power = []
+    m = 0
+    for i in range(0,int(len(Power)/2)-1):
+        New_Power.append(Power[m])
+        m = m + 2
+    #npp = interp.interp1d(np.arange(len(New_Power)),New_Power)
+    #pp = npp(np.linspace(0,len(u)-1,len(u)))
+    pp = np.asarray(resizer(u,Power))
+    norm = np.linalg.norm(pp)
+    normal_array = pp/norm
+    size = normal_array *100
     s = ax.scatter(latitude, longitude, altitude ,s = size, marker = 'o' , c = pp,cmap = cm.jet, linewidths = 0.025,edgecolors = 'k') 
     c_bar = fig.colorbar(s, ax = ax)
     plt.show()
-    t1 = np.linspace(0,30,len(Power))
-    plt.plot(t1, Power,label = 'referce')
-    t2 = np.linspace(0,30,len(pp))
-    plt.plot(t2,pp,label = 'interplorated')
+    t1 = resizer(pp,Time)
+    t2 = resizer(Power,Time)
+    plt.plot(t1, pp,label = 'reference')
+    plt.plot(t2,Power,label = 'interplorated')
     plt.legend()
 
     plt.show()
