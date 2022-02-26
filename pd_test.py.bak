@@ -12,19 +12,17 @@ def split_dict(d, key):
 
 	for i in range(len(d['TimeUS'])):
 		if d['C'][i] == 0:
-			tkf0.append(d['TimeUS'][i])
-			kf0.append(d['VN'][i])
-			pn0.append(d['PN'][i])
-			pe0.append(d['PE'][i])
-			pd0.append(-d['PD'][i])
+			pass
 		elif d['C'][i] == 1:
 			tkf1.append(d['TimeUS'][i])
-			kf1.append(d['GZ'][i])
 			pn1.append(d['PN'][i])
 			pe1.append(d['PE'][i])
 			pd1.append(d['PD'][i])
+			pn0.append(d['VN'][i])
+			pe0.append(d['VE'][i])
+			pd0.append(d['VD'][i])
 
-	return tkf0,kf0,tkf1,kf1,pn0,pe0,pd0
+	return tkf1,pn1,pe1,pd1,pn0,pe0,pd0
 	
 def resizer(ref_arr, data_arr):
 	New_Power = interp.interp1d(np.arange(len(data_arr)),data_arr)
@@ -46,20 +44,24 @@ if __name__ == '__main__':
 
 
 	xkf1 = data['XKF1']
-	a,b,c,d,u,v,w = split_dict(xkf1, 'C')
-	latitude = u#analysis.Data['GPS']['Lat'][1:]
-	longitude = v#analysis.Data['GPS']['Lng'][1:]
-	altitude = w#analysis.Data['GPS']['Alt'][1:]
-	time = a
+	t,px,py,pz,vx,vy,vz = split_dict(xkf1, 'C')
+	latitude = px#analysis.Data['GPS']['Lat'][1:]
+	longitude = py#analysis.Data['GPS']['Lng'][1:]
+	altitude = pz#analysis.Data['GPS']['Alt'][1:]
+	time = t
 	distance = 0
 	d =[]
 	d.append(0)
-	for i in range(0,len(a) - 1):
-		distance += np.sqrt((u[i+1]-u[i])**2 + (v[i+1]-v[i])**2 )
+	Velocity = []
+	Velocity.append(0)
+	for i in range(0,len(t) - 1):
+		distance += np.sqrt((px[i+1]-px[i])**2 + (py[i+1]-py[i])**2 )
 		d.append(distance)
-
-	plt.plot(time,d,label='distance')
-	print(distance)
+		Velocity.append(np.sqrt(vx[i]**2 + vy[i]**2))
+	pp = np.asarray(resizer(px,Power))
+	plt.plot(time,Velocity,label='velocity')
+	plt.plot(time,pp,label='vertical speed')
+	print(max(Velocity))
 	#plt.plot(time,d)
 	plt.legend()
 	plt.show()
