@@ -1,9 +1,0 @@
-LogDict = {
-'AHR2':{'TimeUS' : [1] , 'Pitch': [2] , 'Yaw' : [3], 'Alt' : [4] , 'Lat' : [5], 'Lng' : [6], 'Q1' : [7], 'Q2' : [8], 'Q3' : [9], 'Q4' :[10]},
-#'ARM': {'TimeUS' : [1] , 'ArmState': [2] , 'ArmChecks' : [3], 'VoltR' : [4] , 'Forced' : [5], 'Method' : [6]},
-#'ATT':{'TimeUS' : [0], 'DesRoll' : [1], 'Roll' : [2], 'DesPitch' : [3], 'Pitch' : [4], 'DesYaw' : [5], 'Yaw' : [6], 'ErrRP' : [7], 'ErrYaw' : [8],'AEKF' : [9]},
-'BAT': { 'TimeUS' : [1] , 'Instance': [2] , 'Volt' : [3], 'VoltR' : [4] , 'Curr' : [5], 'CurrTot' : [6], 'EnrgTot' : [7], 'Temp' : [8], 'Res' : [9], 'RemPct' :[10]},
-#'MODE': {'TimeUS' : [1] , 'Mode': [2] , 'ModeNum' : [3], 'VoltR' : [4]},
-'XKF1':{'TimeUS' : [1] , 'C': [2] , 'Roll' : [3], 'Pitch' : [4] , 'Yaw' : [5], 'VN' : [6], 'VE' : [7], 'VD' : [8], 'dPD' : [9], 'PN' : [10], 'PE' :[11], 'PD' : [12], 'GX' :[13], 'GY' :[14], 'GZ' :[15], 'OH' :[16]}
-}
-

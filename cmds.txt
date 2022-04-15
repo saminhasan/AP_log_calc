@@ -1,0 +1,21 @@
+sudo apt install gpsd gpsd-clients
+sudo pip3 install pyserial
+sudo nano /etc/default/gpsd
+/// file -> /etc/default/gpsd
+START_DAEMON="true"
+GPSD_OPTIONS="-n"
+DEVICES="/dev/serial0"
+GPSD_SOCKET="/var/run/gpsd.sock"
+///
+sudo killall gpsd
+sudo gpsd /dev/serial0 -F /var/run/gpsd.sock
+cgps -s
+sudo reboot
+
+# https://maker.pro/raspberry-pi/tutorial/how-to-use-a-gps-receiver-with-raspberry-pi-4
+# https://maker.pro/raspberry-pi/tutorial/how-to-read-gps-data-with-python-on-a-raspberry-pi
+# https://forums.raspberrypi.com/viewtopic.php?t=185329#p1171448
+git clone https://github.com/saminhasan/rpi-gps.git
+cd rpi-gps/
+
+python3 gps_lib_test.py
